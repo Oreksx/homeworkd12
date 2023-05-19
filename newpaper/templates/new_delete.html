@@ -1,0 +1,83 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+ 
+<!-- Название у нас будет proudcts -->
+{% block title %}
+news
+{% endblock title %}
+ 
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h2>Вы действительно хотите удалить данную новость?</h2>
+<table>
+    <thead>
+        <th>
+            Заголовок
+        </th>
+        <th>
+            Дата публикации
+        </th>
+        <th>
+            Текст
+        </th>
+    </thead>
+    <tr>
+        <td>
+            {{ news.titlepost|censor }}
+        </td>
+        <td>
+            {{ news.datepost|date:'d M Y' }}
+        </td>
+        <td>
+            {{ news.textpost|truncatechars:50|censor }}
+        </td>
+    </tr>
+</table>
+
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить">
+</form>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

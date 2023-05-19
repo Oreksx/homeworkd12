@@ -1,0 +1,91 @@
+<!--  наследуемся от шаблона default.html, который мы создавали ещё во времена flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+ 
+<!-- Название у нас будет proudcts -->
+{% block title %}
+news
+{% endblock title %}
+ 
+<!-- В контенте на странице мы выводим все товары -->
+{% block content %}
+<h1>все новости</h1>
+<h3>количество всех новостей: {{ news|length }}</h3>
+{% if news %}
+<table>
+    <thead>
+        <th>
+            Заголовок
+        </th>
+        <th>
+            Дата публикации
+        </th>
+        <th>
+            Текст
+        </th>
+        <th>
+            Категория
+        </th>
+    </thead>
+{% for new in news %} <!-- Для каждого товара будете генерироваться новая строчка, т.е. новый html код. При этом сам цикл работает точно так же, как и в python. product — переменная цикла, т.е. наш товар, взятый из общего списка -->
+    <tr>
+        <td>
+            <a href="{% url 'new_detail' new.id %}">{{ new.titlepost|title }}</a>
+            <a href="{% url 'new_update' new.id %}"><u>Редактировать</u></a>
+            <a href="{% url 'new_delete' new.id %}"><u>Удалить</u></a>
+        </td>
+        <td>
+            {{ new.datepost|date:'d M Y' }}
+        </td>
+        <td>
+            {{ new.textpost|truncatechars:50|censor }}
+        </td>
+        <td>
+            {% for category in new.posts.all %}
+            {{ category }}
+            {% endfor %}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% else %}
+<h2>News нет</h2>
+{% endif %}
+{% if is_paginated %}
+
+{% if page_obj.has_previous %}
+<a href="?page=1">First</a>
+<a href="?page={{ page_obj.previous_page_number }}"><<<<</a>
+{% endif %}
+
+{% for num in page_obj.paginator.page_range %}
+{% if page_obj.number == num %}
+<a>{{ num }}</a>
+{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+<a href="?page={{ num }}">{{ num }}</a>
+{% endif %}
+{% endfor %}
+
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}">>>></a>
+<a href="?page={{ page_obj.paginator.num_pages }}">last</a>
+{% endif %}
+
+{% endif %}
+
+<a href="{% url 'new_create' %}">Добавить новость</a>
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+

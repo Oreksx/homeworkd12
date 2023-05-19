@@ -1,0 +1,83 @@
+список команд запускаемых в django shell
+
+cd newpaper
+py manage.py shell
+from django.contrib.auth.models import User
+user1 = User.objects.create(username = "user1")
+user3 = User.objects.create(username = "user3")
+from news.models import Author
+Author.objects.create(user = user1)
+Author.objects.create(user = user3)
+from news.models import Category
+Category.objects.create(categoryname = "sport")
+Category.objects.create(categoryname = "computer")
+Category.objects.create(categoryname = "book")
+Category.objects.create(categoryname = "other")
+from news.models import Post
+Post.objects.create(author = Author.objects.get(user = User.objects.get(username = "user1")), typepost = 'PO', titlepost = '1', textpost = '1')
+Post.objects.create(author = Author.objects.get(user = User.objects.get(username = "user3")), typepost = 'PO', titlepost = '3', textpost = '3')
+Post.objects.create(author = Author.objects.get(user = User.objects.get(username = "user1")), typepost = 'NE', titlepost = '57', textpost = '1')
+p1 = Post.objects.get(titlepost = "1")
+p3 = Post.objects.get(titlepost = "3")
+p57 = Post.objects.get(titlepost = "57")
+c1 = Category.objects.get(categoryname = "sport")
+c3 = Category.objects.get(categoryname = "computer")
+c4 = Category.objects.get(categoryname = "book")
+c57 = Category.objects.get(categoryname = "other")
+from news.models import PostCategory
+p1.posts.add(c1)
+p3.posts.add(c3, c4)
+p57.posts.add(c57)
+from news.models import Comment
+Comment.objects.create(post = Post.objects.get(titlepost = "1"), user = User.objects.get(username = "user1"), textcomment = '1')
+Comment.objects.create(post = Post.objects.get(titlepost = "3"), user = User.objects.get(username = "user3"), textcomment = '3')
+Comment.objects.create(post = Post.objects.get(titlepost = "57"), user = User.objects.get(username = "user1"), textcomment = '57')
+Comment.objects.create(post = Post.objects.get(titlepost = "1"), user = User.objects.get(username = "user1"), textcomment = '4')
+Post.objects.get(titlepost = "1").like()
+Post.objects.get(titlepost = "1").like()
+Post.objects.get(titlepost = "1").like()
+Post.objects.get(titlepost = "3").like()
+Post.objects.get(titlepost = "57").like()
+Post.objects.get(titlepost = "1").like()
+Post.objects.get(titlepost = "1").dislike()
+Comment.objects.get(textcomment = "1").like()
+Comment.objects.get(textcomment = "1").like()
+Comment.objects.get(textcomment = "1").like()
+Comment.objects.get(textcomment = "3").like()
+Comment.objects.get(textcomment = "57").like()
+Comment.objects.get(textcomment = "1").dislike()
+Comment.objects.get(textcomment = "1").like()
+Author.objects.get(user = User.objects.get(username = "user1")).update_rating()
+Author.objects.get(user = User.objects.get(username = "user3")).update_rating()
+Author.objects.get(user = User.objects.get(username = "user1")).ratingAuthor
+Author.objects.get(user = User.objects.get(username = "user3")).ratingAuthor
+best = Author.objects.all().order_by('-ratingAuthor').values('user', 'ratingAuthor')[0]
+print(best)
+previewbestposts = Post.objects.all().order_by('-ratingpost')[0].preview()
+bestposts = Post.objects.all().order_by('-ratingpost').values('datepost','author__user__username', 'ratingpost', 'titlepost')[0]
+print(bestposts.values(), previewbestposts)
+commentbestposts = Comment.objects.filter(post = Post.objects.all().order_by('-ratingpost')[0]).values('datecomment', 'user', 'ratingcomment', 'textcomment')
+print(commentbestposts)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,93 @@
+<!--  наследуемся от шаблона default.html, который мы создавали ещё во времена flatpages -->
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+ 
+<!-- Название у нас будет proudcts -->
+{% block title %}
+new
+{% endblock title %}
+ 
+<!-- В контенте на странице мы выводим сам товар, айди которого было передано в адрес -->
+{% block content %}
+<h1>Заголовок: {{ news.titlepost|censor}}</h1>
+Дата публикации: {{ news.datepost|date:'d M Y h:i'}}
+Автор: {{ news.author.user.username }}
+Текст: {{ news.textpost|censor}}
+{% if is_not_subs %}
+Категория: {{ news.get_category }}
+<form action="{% url 'subs' %}" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+<input type="hidden" name="categoryname" value={{ news.get_category }}>
+<input type="submit" value="Подписаться на статьи из данной категории">
+</form>
+{% else %}
+Категория: {{ news.get_category }}
+{% endif %}
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
